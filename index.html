@@ -22,11 +22,7 @@
         .station-list-drawer.active { left: 0; }
 
         /* 車両マーカー */
-        .tram-body {
-            display: flex; align-items: center; gap: 6px; padding: 6px 12px;
-            background: #222; border-radius: 30px; border: 3px solid; color: white;
-            white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
+        .tram-body { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #222; border-radius: 30px; border: 3px solid; color: white; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .border-low { border-color: var(--low); }
         .border-mid { border-color: var(--mid); }
         .border-high { border-color: var(--high); animation: pulse-high 1.5s infinite; }
@@ -35,27 +31,20 @@
         /* 電停ラベル */
         .st-label { background: white !important; border: 2px solid var(--tosaden) !important; color: #1a1a1a !important; font-weight: 900 !important; font-size: 11px !important; padding: 3px 10px !important; border-radius: 20px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; }
 
-        /* 改良版ボトムシート & 時刻表 */
+        /* ボトムシート */
         .bottom-sheet { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-radius: 32px 32px 0 0; z-index: 3000; transform: translateY(101%); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); max-height: 85vh; overflow-y: auto; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
         .bottom-sheet.active { transform: translateY(0); }
         .sheet-photo { width: 100%; height: 220px; object-fit: cover; }
         .sheet-body { padding: 24px; }
         
-        /* 時刻表カードのデザイン改善 */
+        /* 時刻表カード */
         .timetable-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        .time-card {
-            display: flex; align-items: center; justify-content: space-between;
-            background: #fff; padding: 18px 22px; border-radius: 24px;
-            border: 2px solid #f0f0f0; transition: transform 0.2s;
-        }
+        .time-card { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 18px 22px; border-radius: 24px; border: 2px solid #f0f0f0; }
         .time-card.urgent { border-color: var(--high); background: #fffefe; }
         .time-main { font-size: 2rem; font-weight: 900; color: #333; letter-spacing: -1px; }
         .time-info { display: flex; flex-direction: column; }
         .dest-label { font-size: 0.8rem; font-weight: bold; color: #888; margin-bottom: -2px; }
-        .time-diff {
-            padding: 8px 16px; border-radius: 50px; font-weight: 800; font-size: 0.9rem;
-            text-align: center; min-width: 80px;
-        }
+        .time-diff { padding: 8px 16px; border-radius: 50px; font-weight: 800; font-size: 0.9rem; text-align: center; min-width: 80px; }
         .diff-normal { background: var(--tosaden); color: white; }
         .diff-urgent { background: var(--high); color: white; animation: blink 1s infinite alternate; }
         @keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
@@ -86,14 +75,14 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const stations = [
-            { name: "高知駅前", pos: [33.5670, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Kochi-Station-2012.jpg/640px-Kochi-Station-2012.jpg", desc: "高知の玄関口ぜよ！", times: ["13:50", "14:05", "14:20", "14:35", "14:50", "15:05"] },
-            { name: "蓮池町通", pos: [33.5620, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Hasuikecho-dori_Station_2016.jpg", desc: "日曜市への近道ぜよ。", times: ["13:52", "14:07", "14:22", "14:37"] },
-            { name: "はりまや橋", pos: [33.5594, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Harimayabashi_Station_2016.jpg/640px-Harimayabashi_Station_2016.jpg", desc: "ダイヤモンドクロスが見ものぜよ！", times: ["13:55", "14:10", "14:25", "14:40"] },
-            { name: "高知城前", pos: [33.5594, 133.5300], img: "https://upload.wikimedia.org/wikipedia/commons/8/87/Kochi_Castle_01.jpg", desc: "立派な天守閣が見えるぜよ。", times: ["13:58", "14:13", "14:28", "14:43"] },
-            { name: "鏡川橋", pos: [33.5594, 133.5150], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Kagamigawabashi_Station_2016.jpg/640px-Kagamigawabashi_Station_2016.jpg", desc: "ここから先は単線区間ぜよ。", times: ["14:05", "14:20", "14:35"] },
-            { name: "知寄町", pos: [33.5594, 133.5650], img: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Chiyoricho_Station_2016.jpg", desc: "東エリアの賑わう電停ぜよ。", times: ["14:00", "14:15", "14:30", "14:45"] },
-            { name: "後免町", pos: [33.5594, 133.6450], img: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Gomenmachi_Station_2016.jpg", desc: "後免線の終点、旅情があるぜよ。", times: ["14:30", "15:00"] },
-            { name: "桟橋通五丁目", pos: [33.5400, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Sambashidori-Gochome_Station_2016.jpg/640px-Sambashidori-Gochome_Station_2016.jpg", desc: "潮風を感じる終点ぜよ。", times: ["14:10", "14:40"] }
+            { name: "高知駅前", pos: [33.5670, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Kochi-Station-2012.jpg/640px-Kochi-Station-2012.jpg", desc: "高知の玄関口ぜよ！" },
+            { name: "蓮池町通", pos: [33.5620, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Hasuikecho-dori_Station_2016.jpg", desc: "日曜市への近道ぜよ。" },
+            { name: "はりまや橋", pos: [33.5594, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Harimayabashi_Station_2016.jpg/640px-Harimayabashi_Station_2016.jpg", desc: "ダイヤモンドクロスが見ものぜよ！" },
+            { name: "高知城前", pos: [33.5594, 133.5300], img: "https://upload.wikimedia.org/wikipedia/commons/8/87/Kochi_Castle_01.jpg", desc: "立派な天守閣が見えるぜよ。" },
+            { name: "鏡川橋", pos: [33.5594, 133.5150], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Kagamigawabashi_Station_2016.jpg/640px-Kagamigawabashi_Station_2016.jpg", desc: "ここから先は単線区間ぜよ。" },
+            { name: "知寄町", pos: [33.5594, 133.5650], img: "https://upload.wikimedia.org/wikipedia/commons/3/3d/Chiyoricho_Station_2016.jpg", desc: "東エリアの賑わう電停ぜよ。" },
+            { name: "後免町", pos: [33.5594, 133.6450], img: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Gomenmachi_Station_2016.jpg", desc: "後免線の終点、旅情があるぜよ。" },
+            { name: "桟橋通五丁目", pos: [33.5400, 133.5430], img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Sambashidori-Gochome_Station_2016.jpg/640px-Sambashidori-Gochome_Station_2016.jpg", desc: "潮風を感じる終点ぜよ。" }
         ];
 
         const paths = {
@@ -151,8 +140,11 @@
         }
         animate();
 
+        // --- 修正：現在の時刻から動的に時刻表を生成する ---
         function showStation(st) {
-            const cur = new Date().getHours() * 60 + new Date().getMinutes();
+            const now = new Date();
+            const curTotalMin = now.getHours() * 60 + now.getMinutes();
+            
             document.getElementById('sheet-img').src = st.img;
             
             let html = `
@@ -164,34 +156,27 @@
                 <div class="timetable-container">
             `;
             
-            const upcoming = st.times.filter(t => {
-                const [h,m] = t.split(':').map(Number);
-                const d = (h*60+m) - cur;
-                return d >= -1 && d < 120;
-            });
+            // 現在時刻から「5分後、15分後、25分後」のダミー時刻を生成
+            const fakeArrivals = [5, 15, 25];
 
-            if(upcoming.length === 0) {
-                html += `<p style="text-align:center; padding:30px; color:#999;">本日の運行は終了しましたぜよ。</p>`;
-            } else {
-                upcoming.forEach(t => {
-                    const [h,m] = t.split(':').map(Number);
-                    const d = (h*60+m) - cur;
-                    const isUrgent = d <= 3;
-                    const diffText = d <= 0 ? 'まもなく' : 'あと ' + d + '分';
-                    
-                    html += `
-                        <div class="time-card ${isUrgent ? 'urgent' : ''}">
-                            <div class="time-info">
-                                <span class="dest-label">各方面行</span>
-                                <span class="time-main">${t}</span>
-                            </div>
-                            <div class="time-diff ${isUrgent ? 'diff-urgent' : 'diff-normal'}">
-                                ${diffText}
-                            </div>
+            fakeArrivals.forEach(delay => {
+                const arrivalDate = new Date(now.getTime() + delay * 60000);
+                const timeStr = arrivalDate.getHours() + ":" + String(arrivalDate.getMinutes()).padStart(2, '0');
+                const isUrgent = delay <= 5;
+                const diffText = "あと " + delay + "分";
+
+                html += `
+                    <div class="time-card ${isUrgent ? 'urgent' : ''}">
+                        <div class="time-info">
+                            <span class="dest-label">各方面行</span>
+                            <span class="time-main">${timeStr}</span>
                         </div>
-                    `;
-                });
-            }
+                        <div class="time-diff ${isUrgent ? 'diff-urgent' : 'diff-normal'}">
+                            ${diffText}
+                        </div>
+                    </div>
+                `;
+            });
 
             html += `</div>`;
             document.getElementById('sheet-content').innerHTML = html;
